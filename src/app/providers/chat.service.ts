@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 import { Message } from '../interfaces/message.interface';
 
@@ -9,8 +11,15 @@ export class ChatService {
   private itemsCollection: AngularFirestoreCollection<Message>;
 
   public chats:Message[] = [];
+  public user: any = {}
 
-  constructor(private afs: AngularFirestore) { }
+
+  constructor(private afs: AngularFirestore,
+              public afAuth: AngularFireAuth) {
+    this.afAuth.authState.subscribe(usr =>{
+      console.log('User state: ', usr);
+    });
+  }
 
   loadMessages() {
     //this.itemsCollection = this.afs.collection<Message>('chats');
@@ -41,5 +50,12 @@ export class ChatService {
     }
 
     return this.itemsCollection.add(msg);
+  }
+
+  login(provider: string) {
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  }
+  logout() {
+    this.afAuth.auth.signOut();
   }
 }
