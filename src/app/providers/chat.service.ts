@@ -18,6 +18,12 @@ export class ChatService {
               public afAuth: AngularFireAuth) {
     this.afAuth.authState.subscribe(usr =>{
       console.log('User state: ', usr);
+      if (!usr) {
+          return;
+      }
+
+      this.user.name = usr.displayName;
+      this.user.uid = usr.uid;
     });
   }
 
@@ -53,9 +59,15 @@ export class ChatService {
   }
 
   login(provider: string) {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    if (provider === 'google') {
+        this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    } else {
+      this.afAuth.auth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
+    }
+
   }
   logout() {
+    this.user = {};
     this.afAuth.auth.signOut();
   }
 }
