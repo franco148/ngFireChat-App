@@ -3,7 +3,7 @@
 
 <div class="app-mensajes" id="app-messages">
 
-  <div class="text-right">
+  <!-- <div class="text-right">
     <span class="badge badge-primary">Franco</span>
     <p>This is a chat message</p>
   </div>
@@ -11,6 +11,11 @@
   <div class="">
     <span class="badge badge-success">Melva</span>
     <p>Te extranio franco</p>
+  </div> -->
+
+  <div class="text-right" *ngFor="let chatMsg of _chatService.chats">
+    <span class="badge badge-primary">Franco</span>
+    <p>{{chatMsg.message}}</p>
   </div>
 
 </div>
