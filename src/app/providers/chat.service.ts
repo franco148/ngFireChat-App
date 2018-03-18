@@ -13,12 +13,23 @@ export class ChatService {
   constructor(private afs: AngularFirestore) { }
 
   loadMessages() {
-    this.itemsCollection = this.afs.collection<Message>('chats');
+    //this.itemsCollection = this.afs.collection<Message>('chats');
+    //If we want to query to firebase we need to ...
+    this.itemsCollection = this.afs.collection<Message>('chats', ref => ref.orderBy('date', 'desc')
+                                                                           .limit(5));
     return this.itemsCollection.valueChanges()
                                .map((msges: Message[]) => {
                                   console.log(msges);
 
-                                  this.chats = msges;
+                                  //this.chats = msges;
+                                  this.chats = [];
+
+                                  for (let m of msges) {
+                                      this.chats.unshift(m);
+                                  }
+
+                                  //the return statement is optional.
+                                  //return this.chats;
                                });
   }
 
