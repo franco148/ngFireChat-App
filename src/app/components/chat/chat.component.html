@@ -13,16 +13,18 @@
     <p>Te extranio franco</p>
   </div> -->
 
-  <div class="text-right" *ngFor="let chatMsg of _chatService.chats">
-    <span class="badge badge-primary">Franco</span>
+  <div *ngFor="let chatMsg of _chatService.chats"
+       [ngClass]="{ 'text-right': _chatService.user.uid == chatMsg.uid }">
+    <span class="badge"
+          [ngClass]="{ 'badge-primary': _chatService.user.uid == chatMsg.uid,
+                       'badge-success': _chatService.user.uid != chatMsg.uid }">
+          {{ chatMsg.name }}
+    </span>
     <p>{{chatMsg.message}}</p>
   </div>
 
 </div>
 
-<!-- <input [(ngModel)]="message" placeholder="Send message"
-       (keyup.enter)="sendMessage()"
-       type="text" name="message"> -->
 <input type="text" name="message" placeholder="Send message"
        [(ngModel)]="message" class="form-control"
        (keyup.enter)="sendMessage()">
